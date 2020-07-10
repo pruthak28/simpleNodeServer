@@ -1,12 +1,10 @@
 const app = require('express')();
 const http = require('http').createServer(app);
-const socketio = require('socket.io');
+const io = require('socket.io')(http);
 const cors = require('cors');
 
-const PORT = process.env.PORT || 4000;
+const PORT_NUM = process.env.PORT || 4000;
 
-const io = socketio(http);
-app.use(cors);
 io.on('connection', (socket) => {
 
   console.log('a user connected');
@@ -20,6 +18,12 @@ io.on('connection', (socket) => {
 });
 
 
-http.listen(PORT, () => {
-  console.log('listening on *:' + PORT);
+
+app.get("/", (req, res) => {
+  res.send("Server is up an running");
+});
+app.use(cors);
+
+http.listen(PORT_NUM, () => {
+  console.log('listening on *:' + PORT_NUM);
 });
